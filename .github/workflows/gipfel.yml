@@ -1,0 +1,24 @@
+name: gipfel
+on:
+  schedule:
+    - cron: "0 3 * * *"   # täglich
+  workflow_dispatch:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: RexJonas333/gipfel@v1.0.0
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: dist
+          lang: de
+      - uses: crazy-max/ghaction-github-pages@v4
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
